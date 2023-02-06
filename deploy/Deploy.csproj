@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <NoWarn>1701;1702;IL2121;MSB3246</NoWarn>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <NoWarn>1701;1702;IL2121;MSB3246</NoWarn>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Cake.Frosting" Version="2.0.0" />
+        <PackageReference Include="Cake.Frosting.Issues.Recipe" Version="2.0.0" />
+        <PackageReference Include="Cake.Issues" Version="2.0.0" />
+        <PackageReference Include="Cake.Issues.MsBuild" Version="2.0.0" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Remove="Tasks\Env\Manifests\KubeDash\ingress-dash.yaml" />
+    </ItemGroup>
+</Project>

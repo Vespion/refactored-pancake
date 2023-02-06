@@ -1,0 +1,21 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: add-trace-id
+  namespace: $NAMESPACE
+spec:
+  plugin:
+    traefik-add-trace-id:
+      headerName: X-Trace-Id
+      headerPrefix: ""
+      verbose: "false"
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: common-chain
+  namespace: $NAMESPACE
+spec:
+  chain:
+    middlewares:
+      - name: $NAMESPACE-add-trace-id@kubernetescrd

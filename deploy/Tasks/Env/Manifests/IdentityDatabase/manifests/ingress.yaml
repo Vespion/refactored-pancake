@@ -1,0 +1,49 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: identity-db
+  namespace: identity
+spec:
+  entryPoints:
+    - postgres
+  routes:
+    - match: HostSNI(`db.identity.waddle.localhost`)
+      services:
+        - name: identity-cluster-rw
+          port: 5432
+  tls:
+    secretName: identity-db-tls
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: identity-db-tls
+  namespace: identity
+spec:
+  secretName: identity-db-tls
+  commonName: db.identity.waddle.localhost
+  dnsNames:
+        - db.identity.waddle.localhost
+  issuerRef:
+    name: ca-issuer
+    kind: ClusterIssuer
+  isCA: false
+  
+  duration: 1h
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS1
+    size: 2048
+    rotationPolicy: Always
+  
+  usages:
+    - server auth
+  subject:
+    organizations:
+      - Vespion Softworks
+    organizationalUnits:
+      - Waddle
+    countries:
+      - GB
+
+  revisionHistoryLimit: 10

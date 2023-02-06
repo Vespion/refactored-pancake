@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: kube-dash
+  namespace: $NAMESPACE
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`cluster.$DOMAIN`)
+      kind: Rule
+      services:
+        - name: kubernetes-dashboard
+          kind: Service
+          namespace: $KUBE_DASH_NAMESPACE
+          port: 80

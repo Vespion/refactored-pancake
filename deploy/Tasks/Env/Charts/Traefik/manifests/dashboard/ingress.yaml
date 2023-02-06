@@ -1,0 +1,14 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-dash
+  namespace: $NAMESPACE
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`proxy.$DOMAIN`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+      kind: Rule
+      services:
+        - name: api@internal
+          kind: TraefikService

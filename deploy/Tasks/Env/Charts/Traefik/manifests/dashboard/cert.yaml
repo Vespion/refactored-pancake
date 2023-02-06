@@ -1,0 +1,32 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: traefik-wildcard-cert
+  namespace: $NAMESPACE
+spec:
+  secretName: traefik-wildcard-cert
+  issuerRef:
+    name: $CLUSTER_ISSUER_NAME
+    kind: ClusterIssuer
+  dnsNames:
+    - $DOMAIN
+    - "*.$DOMAIN"
+    - "*.*.$DOMAIN"
+  commonName: $DOMAIN
+  isCA: false
+  duration: 1h
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS1
+    size: 2048
+    rotationPolicy: Always
+  usages:
+    - server auth
+  subject:
+    organizations:
+      - Vespion Softworks
+    organizationalUnits:
+      - Waddle
+    countries:
+      - GB
+  revisionHistoryLimit: 10

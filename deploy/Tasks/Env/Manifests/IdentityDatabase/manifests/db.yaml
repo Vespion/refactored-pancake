@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: $NAMESPACE
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: identity-cluster
+  namespace: $NAMESPACE
+spec:
+  instances: 1
+  primaryUpdateStrategy: unsupervised
+
+  bootstrap:
+    initdb:
+      database: identity
+      owner: identity
+
+  # Require 1Gi of space
+  storage:
+    size: 1Gi
+  
+  monitoring:
+    enablePodMonitor: true
